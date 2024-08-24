@@ -1,0 +1,44 @@
+---
+// index.astro
+---
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Autos</title>
+	</head>
+	<body>
+		<h1>Autos</h1>
+
+		<div id="autos-list">Cargando autos...</div>
+
+		<script>
+			async function fetchAutos() {
+				const response = await fetch('https://ingenious-jaguar-f974f7.instawp.xyz/wp-json/wp/v2/autos?acf_format=standard');
+				const autosData = await response.json();
+				
+				const autosList = document.getElementById('autos-list');
+				if (autosData && Array.isArray(autosData) && autosData.length > 0) {
+					const listItems = autosData.map(auto => `
+						<li key="${auto.id}">
+							<h2>${auto.title.rendered}</h2>
+							${auto.imageUrl ? `<img src="${auto.imageUrl}" alt="${auto.title.rendered}" />` : ''}
+							<p style="color: ${auto.acf.color}">Marca: ${auto.acf.marca}</p>
+							<p><strong>Modelo:</strong> ${auto.acf.modelo}</p>
+							<p><strong>Descripción:</strong> ${auto.acf.descripcion}</p>
+							<p><strong>Color:</strong> <span style="color: ${auto.acf.color}">${auto.acf.color}</span></p>
+							${auto.acf.foto ? `<div><img src="${auto.acf.foto}" alt="${auto.acf.marca}" /></div>` : ''}
+						</li>
+					`).join('');
+					autosList.innerHTML = `<ul>${listItems}</ul>`;
+				} else {
+					autosList.innerHTML = '<p>No se pudieron recuperar los datos o no hay autos disponibles.</p>';
+				}
+			}
+
+			fetchAutos();
+		</script>
+	</body>
+</html>
