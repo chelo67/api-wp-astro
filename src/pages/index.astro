@@ -16,7 +16,7 @@
 
 		<script>
 			async function fetchAutos() {
-				const response = await fetch('https://ingenious-jaguar-f974f7.instawp.xyz/wp-json/wp/v2/autos?acf_format=standard');
+				const response = await fetch('https://ingenious-jaguar-f974f7.instawp.xyz/wp-json/wp/v2/autos?author=2&acf_format=standard');
 				const autosData = await response.json();
 				
 				const autosList = document.getElementById('autos-list');
